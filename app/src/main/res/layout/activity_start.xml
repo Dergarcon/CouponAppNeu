@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/greeting_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Restaurant auswählen:"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/descr_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/greeting_text"
+        android:layout_marginTop="5dp"
+        android:text="Die Coupons werden als PDF angezeigt"
+        android:textSize="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/greeting_text"
+        android:orientation="vertical"
+        android:id="@+id/restaurants_layout"
+        android:gravity="center"
+        android:layout_marginTop="90dp">
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+
+
+            <Button
+                android:id="@+id/kfc_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="gotoKFC"
+                android:tag="0"
+                android:text="KFC" />
+
+            <Button
+                android:id="@+id/mcd_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="gotoMCD"
+                android:tag="1"
+                android:text="MC Donalds" />
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+
+
+
+            <Button
+                android:id="@+id/bk_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="gotoBK"
+                android:tag="2"
+                android:text="Burger King" />
+
+            <Button
+                android:id="@+id/nordsee_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:onClick="gotoNordsee"
+                android:tag="3"
+                android:text="Nordsee" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+
+
+
+            <Button
+                android:id="@+id/subway_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="gotoSubway"
+                android:tag="4"
+                android:text="Subway" />
+
+            <Button
+                android:id="@+id/fragment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="gotoFragment"
+                android:tag="5"
+                android:text="FragmentTEST" />
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
