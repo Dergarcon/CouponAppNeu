@@ -16,11 +16,6 @@ public class MainActivity extends AppCompatActivity implements PostParserDelegat
     Context context;
 
 
-    String test2222;
-    //GitHubTest
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,23 +23,37 @@ public class MainActivity extends AppCompatActivity implements PostParserDelegat
 
         listView = (ListView) findViewById(R.id.liste);
         xmlUrl = "https://www.hidrive.strato.com/wget/hoSpizp9";
-
-        XMLProcessor2 processor = new XMLProcessor2(xmlUrl, this);
+        String restaurantPrefix = getRestaurantStringFromIntent(savedInstanceState);
+        XMLProcessor2 processor = new XMLProcessor2(xmlUrl, this, restaurantPrefix);
         processor.execute();
 
 
+    }
 
+    private String getRestaurantStringFromIntent(Bundle savedInstanceState) {
+        String newString;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                newString = null;
+            } else {
+                newString = extras.getString("RESTAURANT_PREFIX");
+            }
+        } else {
+            newString = (String) savedInstanceState.getSerializable("RESTAURANT_PREFIX");
+        }
+        return newString;
     }
 
     @Override
     public void xmlFeedParsed(ArrayList<String> bilderUrls) {
         String[] bilderArray = new String[bilderUrls.size()];
 
-        for (int i=0; i<bilderUrls.size(); i++){
+        for (int i = 0; i < bilderUrls.size(); i++) {
             bilderArray[i] = bilderUrls.get(i);
         }
         eatFoodyImages = bilderArray;
         listView.setAdapter(new ImageListAdapter(this, eatFoodyImages));
-        Toast.makeText(this, bilderArray[0].toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, bilderArray[0], Toast.LENGTH_LONG).show();
     }
 }

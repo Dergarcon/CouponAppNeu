@@ -27,12 +27,13 @@ public class XMLProcessor2 extends AsyncTask<String, Void, String> {
     private ArrayList<String> bilderUrls;
     private StringBuilder buffer;
     private static final String ns = null;
+    private String restName;
 
-
-    public XMLProcessor2(String xmlUrl, PostParserDelegate delegate) {
+    public XMLProcessor2(String xmlUrl, PostParserDelegate delegate, String restaurant) {
         this.xmlUrl = xmlUrl;
         this.delegate = delegate;
-        bilderUrls = new ArrayList<String>();
+        this.restName = restaurant;
+        bilderUrls = new ArrayList<>();
     }
 
     //herunterladen XML
@@ -101,51 +102,47 @@ public class XMLProcessor2 extends AsyncTask<String, Void, String> {
 
     }
 
-    private ArrayList<String> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<String> entries = new ArrayList<String>();
-        parser.nextTag();
-        //   parser.require(XmlPullParser.START_TAG, null, null);
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            String name = parser.getName();
-            if (name.equalsIgnoreCase("link")) {
-    /*            parser.next();
-                String link = parser.getText();
-                 //parser.gettext versuchen oder readEntry(parser) ODER GETVALUE!!!
-                entries.add(link);
-                */
+    /* private ArrayList<String> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+         ArrayList<String> entries = new ArrayList<String>();
+         parser.nextTag();
+         //   parser.require(XmlPullParser.START_TAG, null, null);
+         while (parser.next() != XmlPullParser.END_TAG) {
+             if (parser.getEventType() != XmlPullParser.START_TAG) {
+                 continue;
+             }
+             String name = parser.getName();
+             if (name.equalsIgnoreCase(this.restName)) {
+                 parser.next();
+                 entries.add(parser.getText());
+                 parser.next();
 
-                parser.next();
-                entries.add(parser.getText());
-                parser.next();
-
-            } else {
-                skip(parser);
+             }/* else {
+                 parser.next();
+                 parser.next();
+             }
+         }
+         return entries;
+     }
+ */
+    /*
+        private String readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
+            parser.require(XmlPullParser.START_TAG, ns, null);
+            String link = "lalalala";
+            while (parser.next() != XmlPullParser.END_TAG) {
+                if (parser.getEventType() != XmlPullParser.START_TAG) {
+                    continue;
+                }
+                String name = parser.getName();
+                if (name.equalsIgnoreCase("link")) {
+                    parser.next();
+                    link = parser.getText();
+                } else {
+                    skip(parser);
+                }
             }
+            return link;
         }
-        return entries;
-    }
-/*
-    private String readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, ns, null);
-        String link = "lalalala";
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            String name = parser.getName();
-            if (name.equalsIgnoreCase("link")) {
-                parser.next();
-                link = parser.getText();
-            } else {
-                skip(parser);
-            }
-        }
-        return link;
-    }
-*/
+    */
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
@@ -161,6 +158,52 @@ public class XMLProcessor2 extends AsyncTask<String, Void, String> {
                     break;
             }
         }
+    }
+
+
+    private ArrayList<String> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+
+        ArrayList<String> entries = new ArrayList<>();
+        int eventType = parser.getEventType();
+        boolean richtigesRest = false;
+        parser.nextTag();
+        String currentValue = "";
+        String currentRestName = "";
+
+        while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
+            eventType = parser.getEventType();
+            // Get the current tag
+            String tagname = parser.getName();
+
+            // React to different event types appropriately
+
+            switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    if (tagname.equalsIgnoreCase("restaurant")) {
+                        currentRestName = parser.getAttributeValue(0);
+                        if (restName.equalsIgnoreCase(currentRestName)) {
+                            richtigesRest = true;
+                        }
+                    }
+                    break;
+
+                case XmlPullParser.TEXT:
+                    currentValue = parser.getText();
+                    break;
+
+                case XmlPullParser.END_TAG:
+                    if (tagname.equalsIgnoreCase("link") && (richtigesRest)) {
+                        entries.add(currentValue);
+                    }
+                    if (tagname.equalsIgnoreCase("restaurant")) {
+                        richtigesRest = false;
+                    }
+                    break;
+
+            }
+            parser.next();
+        }
+        return entries;
     }
 
 }
