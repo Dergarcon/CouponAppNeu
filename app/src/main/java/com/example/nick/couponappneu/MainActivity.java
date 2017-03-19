@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements PostParserDelegat
     Context context;
 
 
-    String test;
+    String test2222;
     //GitHubTest
 
 
