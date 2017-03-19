@@ -16,6 +16,10 @@ public class MainActivity extends AppCompatActivity implements PostParserDelegat
     Context context;
 
 
+    String test;
+    //GitHubTest
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
